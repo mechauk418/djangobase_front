@@ -9,10 +9,13 @@
         <img :src="image.image" v-else>
       </div>
       <div class="content"> <p> {{ article_content }}</p></div>
+      <div>
+        <button @click="like_article" class="btn_like"> 추천 </button>
+      </div>
       <div class="div_btn">
-        <button @click="modify_article" class="btn"> 수정 </button>
-        <button @click="delete_article" class="btn"> 삭제 </button>
-        <router-link to="/articles"> <button class="bnt"> 목록 </button></router-link>
+        <button @click="modify_article" class="btn_crud"> 수정 </button>
+        <button @click="delete_article" class="btn_crud"> 삭제 </button>
+        <router-link to="/articles"> <button class="btn_crud"> 목록 </button></router-link>
       </div>
       <div v-for="(comment,index) in comments_list" :key="index" style="margin:2rem 0">
         <div class="comment">
@@ -23,12 +26,10 @@
             <p> {{comment.content  }} </p>
           </div>
           <div class="comment_button" style="display: flex; align-items: center; width: 10%; margin-left: 20px; justify-content: center; flex-direction: column;">
-            <button type="button" :class="`${comment.pk}`" @click="toggle(index)" style="background-color: rgb(164, 161, 161); border: 0;">삭제</button>
-            <div v-if="show[index]" >
-              <label> 비밀번호 </label>
-              <input style="width: 80%; margin-top: 2px;" v-model="comment_delete_password">
+            <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(255, 255, 255); border: 1px solid black;">삭제</button>
+            <!-- <div v-if="show[index]" >
               <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(164, 161, 161); border: 0;">삭제</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -121,7 +122,7 @@ export default {
           })
     },
     commentDelete(pk) {
-      axios.delete('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/${pk}/`)
+      axios.delete('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/${pk}`)
         .then((response) => {
           axios({ // 댓글 작성해서 리스트를 다시 불러옴
             method: 'GET',
@@ -134,8 +135,6 @@ export default {
             this.article_user = res.data.createuser
             this.article_image = res.data.images
             this.comments_list = res.data.comments
-          })
-          .catch(response => {
           })
         })
     },
@@ -230,6 +229,31 @@ export default {
   margin: 0.5rem;
   width : 70%;
   text-align: left;
+}
+
+
+.btn_like{
+  width:100px;
+  height: 50px;
+  margin: 5px;
+  font-size: larger;
+  background-color: white;
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.div_btn{
+  display: flex;
+  justify-content: end;
+}
+
+.btn_crud{
+  background-color: white;
+  border: 1px solid black;
+  margin-right: 8px;
+  margin-top:30px;
+  width:50px;
+  height: 25px;
 }
 
 </style>
