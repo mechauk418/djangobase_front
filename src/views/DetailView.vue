@@ -7,6 +7,8 @@
         <p> {{ article_user }}</p> 
         <p style="left:80%"> {{ created_at }}</p>
       </div>
+      <div style="border-bottom: 1px solid black; margin-top:3rem; margin-bottom: 5rem;">
+      </div>
       <div class="imgbox" v-for="image in article_image" :key="image" style="text-align: start; margin-left: 1.5rem; margin-bottom: 2rem;">
         <img :src="image.image_original" v-if="image.image == null">
         <img :src="image.image" v-else>
@@ -18,9 +20,9 @@
       <div class="div_btn">
         <button @click="modify_article" class="btn_crud"> 수정 </button>
         <button @click="delete_article" class="btn_crud"> 삭제 </button>
-        <router-link to="/articles"> <button class="btn_crud"> 목록 </button></router-link>
+        <button @click="back_btn" class="btn_crud"> 목록 </button>
       </div>
-      <div style="border:0.5px solid black; border-radius: 1px; width:100%; height: 30px; display: flex; align-items: center;">
+      <div style="border:0.5px solid black; border-radius: 10px; width:100%; height: 30px; display: flex; align-items: center;">
         <p style="margin:0px; margin-left:1rem; text-align: start;"> 댓글 {{comments_list.length}} 개</p>
       </div>
       <div v-for="(comment,index) in comments_list" :key="index" >
@@ -163,6 +165,9 @@ export default {
           this.article_like = res.data.like_count
         })
       })
+    },
+    back_btn(){
+      this.$router.go(-1)
     }
 
   },
@@ -194,15 +199,12 @@ export default {
 
 .writer {
   text-align: right;
-  margin-bottom: 8rem;
-  border-bottom: 1px solid black;
   position: relative;
 }
 
 .writer > p {
   font-size :1.2rem;
   margin-top:10px;
-  margin-bottom: 10px;
   text-align: start;
   margin-left:1.5rem;
   position: absolute;

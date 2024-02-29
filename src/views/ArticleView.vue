@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 문의 </h1>
+    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 자유게시판 </h1>
     <div class="bestarticle" style="width:80%; margin: 0 auto; margin-bottom: 30px;">
       <div>
-        <p style="margin:3rem; font-size: larger;"> 건의사항이나 개선해야할 점, 오류 제보 등등 남겨주세요 </p>
+        <p style="margin:3rem; font-size: larger;"> 글을 자유롭게 남겨주세요 </p>
       </div>
     </div>
-    <div class="container" style="width:60%; margin:0 auto;">
+    <div class="container">
       <div style="margin: 0 auto; display: flex; width:80%; height: 50px;">
         <div>
           <button @click="prev" v-if="page_prev"> 인기글 </button>
@@ -41,6 +41,13 @@
       </table>
       <button @click="prev" v-if="page_prev"> 이전 페이지 </button>
       <button @click="next" v-if="page_next"> 다음 페이지 </button>
+      <el-pagination v-if="total_pages"
+        layout="prev, pager, next"
+        :page-size="20"
+        :total="total_pages"
+        :current-page="current_page"
+        @current-change=page_change
+      />
       <div>
         <router-link :to="{name:'create'}"><button> 글 쓰기 </button></router-link>
       </div>
@@ -61,46 +68,58 @@ export default {
       month:null,
       date:null,
       total_pages:null,
+      current_page:null,
     }
   },
   mounted() {
-    axios.get('http://127.0.0.1:8000/article/pages/')
-    .then(response=>{
-      this.total_pages=response.data
-    })
-    axios.get('http://127.0.0.1:8000/article/')
-    .then(response => {
-      this.articles = response.data.results
-      this.page_next= response.data.next
-      this.page_prev = response.data.previous
-      const today = new Date()
-      this.year = today.getFullYear();
-      this.month = today.getMonth();
-      this.date = today.getDate();
-    })
+    const url = new URL(window.location.href);
+    const urlParams = url.searchParams
+    let test_page = urlParams.get('pages')
+    console.log(test_page)
+    if (test_page==null){
+      axios.get('http://127.0.0.1:8000/article/')
+      .then(response => {
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+      })
+    } else {
+      axios.get('http://127.0.0.1:8000/article/'+'?page='+test_page)
+      .then(response => {
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+      })
+    }
+
   },
   methods:{
-    next(){
-      axios.get(this.page_next)
-      .then(response => {
-        this.articles = response.data.results
-        this.page_next= response.data.next
-        this.page_prev = response.data.previous
-      })
-    },
-    prev(){
-      axios.get(this.page_prev)
-      .then(response => {
-        this.articles = response.data.results
-        this.page_next= response.data.next
-        this.page_prev = response.data.previous
-      })
+    page_change(val){
+      this.current_page = val;
+      if (this.current_page==1) {
+        this.$router.push({ name: 'articles'})
+        axios.get('http://127.0.0.1:8000/article/')
+        .then(response => {
+          this.articles = response.data.results
+          this.current_page = response.data.curPage
+          this.total_pages = response.data.itemcount
+        })
+      } else {
+        this.$router.push({ name: 'articles', query: { pages: this.current_page} })
+        axios.get('http://127.0.0.1:8000/article/' + '?page='+this.current_page)
+        .then(response => {
+          this.articles = response.data.results
+          this.current_page = response.data.curPage
+          this.total_pages = response.data.itemcount
+        })
+      }
+      
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 
 table {
   border: 1px solid rgba(169,169,169,0.3);
@@ -133,10 +152,18 @@ td{
   color: rgb(225, 80, 80);
 }
 
-.font제목{
+.container{
+    width:60%; 
+    margin:0 auto;
+  }
 
+
+@media (max-width:1000px) {
+
+  .container{
+    width:90%; 
+    margin:0 auto;
+  }
 }
-
 </style>
-  
-  
+

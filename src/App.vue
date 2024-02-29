@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div style="width:100%; position: absolute;">
+    <div style="width:100%;">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/articles">Article</router-link> |
