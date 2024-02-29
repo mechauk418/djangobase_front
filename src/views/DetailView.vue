@@ -1,31 +1,39 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 문의 </h1>
+    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 자유게시판 </h1>
     <div class="article_box">
       <div class="title"><p>{{article_title }}</p></div>
-      <div class="writer"><p> 작성자 :  {{ article_user }}</p> </div>
+      <div class="writer">
+        <p> {{ article_user }}</p> 
+        <p style="left:80%"> {{ created_at }}</p>
+      </div>
       <div class="imgbox" v-for="image in article_image" :key="image" style="text-align: start; margin-left: 1.5rem; margin-bottom: 2rem;">
         <img :src="image.image_original" v-if="image.image == null">
         <img :src="image.image" v-else>
       </div>
       <div class="content"> <p> {{ article_content }}</p></div>
       <div>
-        <button @click="like_article" class="btn_like"> 추천 </button>
+        <button @click="like_article()" class="btn_like"> {{ article_like }} 추천 </button>
       </div>
       <div class="div_btn">
         <button @click="modify_article" class="btn_crud"> 수정 </button>
         <button @click="delete_article" class="btn_crud"> 삭제 </button>
         <router-link to="/articles"> <button class="btn_crud"> 목록 </button></router-link>
       </div>
-      <div v-for="(comment,index) in comments_list" :key="index" style="margin:2rem 0">
+      <div style="border:0.5px solid black; border-radius: 1px; width:100%; height: 30px; display: flex; align-items: center;">
+        <p style="margin:0px; margin-left:1rem; text-align: start;"> 댓글 {{comments_list.length}} 개</p>
+      </div>
+      <div v-for="(comment,index) in comments_list" :key="index" >
         <div class="comment">
-          <div class="comment_user">
-            <p> {{comment.create_username  }} </p>
+          <div style="width:90%">
+            <div class="comment_user">
+              <p style="margin-top:0px;margin-bottom: 0px; font-weight: 900;"> {{comment.create_username  }} </p>
+            </div>
+            <div class="comment_content">
+              <p>{{comment.content }}</p>
+            </div>
           </div>
-          <div class="comment_content">
-            <p> {{comment.content  }} </p>
-          </div>
-          <div class="comment_button" style="display: flex; align-items: center; width: 10%; margin-left: 20px; justify-content: center; flex-direction: column;">
+          <div class="comment_button" style="display: flex; align-items: center; width: 10%; margin-left: 20px; justify-content: center;">
             <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(255, 255, 255); border: 1px solid black;">삭제</button>
             <!-- <div v-if="show[index]" >
               <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(164, 161, 161); border: 0;">삭제</button>
@@ -34,12 +42,9 @@
         </div>
       </div>
       <form @submit.prevent="create_comment" class="myform">
+        <p style="text-align: start;"> 댓글 쓰기 </p>
         <div class="input-wrap">
-          <div>
-            <input type="text" id="createuser" v-model="createuser" autocomplete="off" style="margin-bottom: 10px;">  
-            <input type="password" id="password" v-model="password" autocomplete="off">  
-          </div>
-          <input type="text" id="comment" v-model="comments_content" autocomplete="off">
+          <textarea id="comment" v-model="comments_content" autocomplete="off"></textarea>
           <button type="submit" style="cursor:pointer;">작성</button>
         </div>
       </form>
@@ -51,6 +56,8 @@
 
 <script>
 import axios from 'axios'
+import loginStore from '../store/index'
+import testaxios from '../../src/axios'
 // @ is an alias to /src
 export default {
   data() {
@@ -65,10 +72,15 @@ export default {
       show:[],
       createuser:'',
       password:'',
-      comment_delete_password:'',
+      login_user:null,
+      created_at:null,
+      article_like:null,
     }
   },
   mounted() {
+    if (loginStore.state.loginStore.isLogin) {
+      this.login_user = loginStore.state.loginStore.userInfo.username
+    }
     axios({
       method: "GET",
       url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
@@ -83,6 +95,7 @@ export default {
       this.article_image = res.data.images
       this.comments_list = res.data.comments
       this.show = Array(this.comments_list.length).fill(false)
+      this.created_at = res.data.created_at.slice(0,4) +'.' + res.data.created_at.slice(5,7) +'.' +res.data.created_at.slice(8,10) +' ㅤ'+res.data.created_at.slice(11,16)
     })
 
   },
@@ -99,30 +112,29 @@ export default {
     create_comment() {
       const comment_data = {
         'content': this.comments_content,
-        'createuser': this.createuser,
-        'password': this.password,
-        'article':this.$route.params.pk
       }
-      axios.post('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/`, comment_data)
-          .then((response) => {
-            axios({ // 댓글 작성해서 리스트를 다시 불러옴
-              method: 'GET',
-              url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
-            })
-            .then(res => {
-              this.article = res.data
-              this.article_title = res.data.title
-              this.article_content = res.data.content
-              this.article_user = res.data.createuser
-              this.article_image = res.data.images
-              this.comments_list = res.data.comments
-            })
-            .catch(response => {
-            })
-          })
+      testaxios.post('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/`, comment_data,
+      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
+      .then((response) => {
+        axios({ // 댓글 작성해서 리스트를 다시 불러옴
+          method: 'GET',
+          url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
+        })
+        .then(res => {
+          this.article = res.data
+          this.article_title = res.data.title
+          this.article_content = res.data.content
+          this.article_user = res.data.createuser
+          this.article_image = res.data.images
+          this.comments_list = res.data.comments
+        })
+        .catch(response => {
+        })
+      })
     },
     commentDelete(pk) {
-      axios.delete('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/${pk}`)
+      axios.delete('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/${pk}`,
+      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')} ,withCredentials: true} )
         .then((response) => {
           axios({ // 댓글 작성해서 리스트를 다시 불러옴
             method: 'GET',
@@ -138,6 +150,20 @@ export default {
           })
         })
     },
+    like_article(){
+      testaxios.post('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/like/`,
+      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
+      .then((response) => {
+        axios({
+          method: "GET",
+          url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
+          withCredentials:true
+        })
+        .then(res =>{
+          this.article_like = res.data.like_count
+        })
+      })
+    }
 
   },
 }
@@ -146,8 +172,7 @@ export default {
 <style scoped>
 
 .article_box {
-  border: 1px solid black;
-  border-radius: 1cm;
+
   padding: 2rem;
   margin:0 auto;
   width:1200px;
@@ -155,15 +180,32 @@ export default {
 
 .title {
   text-align: left;
-  font-size : 1.5rem;
-  margin-left: 1.5rem;
-  margin-bottom: 2rem;
+  font-size : 2rem;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: rgb(237, 239, 241);
+}
+
+.title >p{
+  margin-left:1.5rem;
+  margin-top:10px;
+  margin-bottom: 10px;
 }
 
 .writer {
   text-align: right;
-  font-size : 1rem;
   margin-bottom: 8rem;
+  border-bottom: 1px solid black;
+  position: relative;
+}
+
+.writer > p {
+  font-size :1.2rem;
+  margin-top:10px;
+  margin-bottom: 10px;
+  text-align: start;
+  margin-left:1.5rem;
+  position: absolute;
 }
 
 .content {
@@ -173,6 +215,15 @@ export default {
   margin-bottom: 8rem;
 }
 
+.content > p {
+  font-size:1.2rem;
+  margin-left:3rem;
+  text-align: start;
+  margin-bottom: 0px;
+  margin-top:0px;
+  width:90%;
+  word-break: break-all;
+}
 
 .btn{
   margin:0.2rem
@@ -207,30 +258,48 @@ export default {
 }
 
 .myform {
-  margin-bottom : 0.5rem;
-  margin-top : 0.5rem;
+  margin-top : 3rem;
   padding:1rem;
+  border:1px solid rgb(175, 162, 162);
+  border-radius: 10px;
 
 }
 
-.comment {
+#comment {
   display : flex;
-  margin-left: 50px;
+  height: 80px;
+  width:100%;
+  text-align: start;
+  resize: none;
+  font-size: 1rem;
+}
+
+.comment {
+  display: flex;
+  height: auto;
+  margin-bottom: 10px;
 }
 
 .comment_user{
   padding: 0.5rem;
-  margin: 0.5rem;
+  margin: 0.3rem;
   width:15%;
+  text-align: start;
 }
 
 .comment_content{
   padding: 0.5rem;
-  margin: 0.5rem;
-  width : 70%;
-  text-align: left;
+  width:100%;
 }
 
+.comment_content > p{
+  text-align: start;
+  margin-left:0.3rem;
+  margin-bottom: 0px;
+  margin-top:0px;
+  width:100%;
+  word-break: break-all;
+}
 
 .btn_like{
   width:100px;
@@ -240,11 +309,13 @@ export default {
   background-color: white;
   border: 1px solid black;
   margin-bottom: 20px;
+  border-radius: 5px;
 }
 
 .div_btn{
   display: flex;
   justify-content: end;
+  margin-bottom: 2rem;
 }
 
 .btn_crud{

@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
-
+import loginStore from './modules/loginStore'
+import refreshtoken from './modules/refreshtoken'
+import createPersistedState from 'vuex-persistedstate'
 export default createStore({
   state: {
   },
@@ -10,5 +12,11 @@ export default createStore({
   actions: {
   },
   modules: {
-  }
+    loginStore, refreshtoken
+  },
+  plugins: [
+    createPersistedState({
+      paths: ['loginStore']
+    })
+  ]
 })

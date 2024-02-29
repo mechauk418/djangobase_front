@@ -9,13 +9,14 @@ testaxios.interceptors.response.use(
     return response
   },
   async (error) => {
-    console.log('interceptors 시작')
+    // console.log('interceptors 시작')
     const {
       config,
       response: { status }
     } = error
     if (status === 401) {
-      if (error.response.data.detail === '이 토큰은 모든 타입의 토큰에 대해 유효하지 않습니다') { // 응답이 영어면 영어로 수정해서 사용한다.
+      if (error.response.data.detail === '이 토큰은 모든 타입의 토큰에 대해 유효하지 않습니다')  // 응답이 영어면 영어로 수정해서 사용한다.
+      { 
         const originalRequest = config
         await store.dispatch('refreshtt')
         const newAccessToken = localStorage.getItem('access_token')
