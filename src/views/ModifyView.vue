@@ -85,7 +85,7 @@ export default {
       this.article = res.data
       this.title = res.data.title
       this.content = res.data.content
-      this.createuser = res.data.createuser
+      this.createuser = res.data.create_username
       this.article_image = res.data.images
       this.comments_list = res.data.comments
       this.password = res.data.password

@@ -219,7 +219,6 @@ export default {
 
 .content > p {
   font-size:1.2rem;
-  margin-left:3rem;
   text-align: start;
   margin-bottom: 0px;
   margin-top:0px;
