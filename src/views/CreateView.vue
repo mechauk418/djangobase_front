@@ -53,8 +53,9 @@ export default {
       selected2: "0",
       selectList: [
         { name: "일반", value: "0" },
-        { name: "건의사항", value: "1" },
-        { name: "오류제보", value: "2" },
+        { name: "정보", value: "1" },
+        { name: "사진", value: "2" },
+        { name: "자랑", value: "3" },
       ],
     }
   },
@@ -78,7 +79,6 @@ export default {
       createdata.append('subject',this.selected2)
       for (const i of this.images) {
         createdata.append('image',i)
-        console.log(i)
       }
       testaxios({
         method: 'POST',

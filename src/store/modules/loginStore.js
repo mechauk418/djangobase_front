@@ -28,7 +28,6 @@ const loginStore = {
       axios
         .post('http://127.0.0.1:8000/accounts/login/', loginObj, { withCredentials : true}) // 로그인 URL로 ID, PW를 보냄
         .then((res) => {
-          console.log(res.data)
           const token = res.data.access
           localStorage.setItem('access_token', token) // 토큰을 저장함
           axios.defaults.headers.common.Authorization = `Bearer ${token}`

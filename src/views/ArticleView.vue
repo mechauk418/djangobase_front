@@ -19,6 +19,7 @@
         </div>
 
       </div>
+
       <table style="margin : 0 auto; width:80%; border-collapse: collapse; margin-bottom: 2rem;">
         <tr style="height: 3rem;">
           <th style="font-size: 13px;"> 글번호 </th>
@@ -39,17 +40,19 @@
           <td><p> {{ article.like_count }}  </p> </td>
         </tr>
       </table>
-      <button @click="prev" v-if="page_prev"> 이전 페이지 </button>
-      <button @click="next" v-if="page_next"> 다음 페이지 </button>
-      <el-pagination v-if="total_pages"
+      <div class="btn_write">
+        <router-link :to="{name:'create'}">
+          <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 글 쓰기 </button>
+        </router-link>
+      </div>
+      <div style="display: flex; justify-content: center;">
+        <el-pagination v-if="total_pages"
         layout="prev, pager, next"
         :page-size="20"
         :total="total_pages"
         :current-page="current_page"
         @current-change=page_change
-      />
-      <div>
-        <router-link :to="{name:'create'}"><button> 글 쓰기 </button></router-link>
+        />
       </div>
     </div>
   </div>
@@ -75,7 +78,6 @@ export default {
     const url = new URL(window.location.href);
     const urlParams = url.searchParams
     let test_page = urlParams.get('pages')
-    console.log(test_page)
     if (test_page==null){
       axios.get('http://127.0.0.1:8000/article/')
       .then(response => {
@@ -153,17 +155,29 @@ td{
 }
 
 .container{
-    width:60%; 
-    margin:0 auto;
-  }
+  width:60%; 
+  margin:0 auto;
+}
 
+.btn_write {
+  display: flex;
+  justify-content: end;
+  width:80%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
 
-@media (max-width:1000px) {
+@media (max-width:1500px) {
 
   .container{
     width:90%; 
     margin:0 auto;
   }
+
 }
+
+
+
+
 </style>
 

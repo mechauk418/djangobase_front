@@ -2,7 +2,7 @@
   <div>
     <h1 style="margin-top: 50px; margin-bottom: 50px;"> 자유게시판 </h1>
     <div class="article_box">
-      <div class="title"><p>{{article_title }}</p></div>
+      <div class="title"><p>[{{subject}}] {{article_title }}</p></div>
       <div class="writer">
         <p> {{ article_user }}</p> 
         <p style="left:80%"> {{ created_at }}</p>
@@ -22,7 +22,7 @@
         <button @click="delete_article" class="btn_crud"> 삭제 </button>
         <button @click="back_btn" class="btn_crud"> 목록 </button>
       </div>
-      <div style="border:0.5px solid black; border-radius: 10px; width:100%; height: 30px; display: flex; align-items: center;">
+      <div style="border:0.5px solid black; border-radius: 10px; width:100%; height: 30px; display: flex; align-items: center; background-color: whitesmoke;">
         <p style="margin:0px; margin-left:1rem; text-align: start;"> 댓글 {{comments_list.length}} 개</p>
       </div>
       <div v-for="(comment,index) in comments_list" :key="index" >
@@ -44,7 +44,7 @@
         </div>
       </div>
       <form @submit.prevent="create_comment" class="myform">
-        <p style="text-align: start;"> 댓글 쓰기 </p>
+        <p style="text-align: start; font-size: larger;"> 댓글 쓰기 </p>
         <div class="input-wrap">
           <textarea id="comment" v-model="comments_content" autocomplete="off"></textarea>
           <button type="submit" style="cursor:pointer;">작성</button>
@@ -77,6 +77,7 @@ export default {
       login_user:null,
       created_at:null,
       article_like:null,
+      subject:null,
     }
   },
   mounted() {
@@ -96,6 +97,7 @@ export default {
       this.article_like = res.data.like_count
       this.article_image = res.data.images
       this.comments_list = res.data.comments
+      this.subject = res.data.subject
       this.show = Array(this.comments_list.length).fill(false)
       this.created_at = res.data.created_at.slice(0,4) +'.' + res.data.created_at.slice(5,7) +'.' +res.data.created_at.slice(8,10) +' ㅤ'+res.data.created_at.slice(11,16)
     })

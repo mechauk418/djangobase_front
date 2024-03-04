@@ -3,6 +3,10 @@
     <form @submit.prevent="submitForm" class="myform">
       <h1 class="form-title">회원가입</h1>
       <div class="input-wrap">
+        <label for="text">닉네임<span style="color: rgb(255, 69, 37)">*</span></label>
+        <input type="text" id="text" v-model="username" class="input-text"/>
+      </div>
+      <div class="input-wrap">
         <label for="email">이메일<span style="color: rgb(255, 69, 37)">*</span></label>
         <input type="email" id="email" v-model="email" class="input-text"/>
       </div>
@@ -28,6 +32,7 @@ export default {
   name: 'SignupForm',
   data () {
     return {
+      username:'',
       email: '',
       password1: '',
       password2: '',
@@ -42,15 +47,13 @@ export default {
       if (this.password1 != this.password2) {
         alert('비밀번호가 일치하지 않습니다.')
       }
-      if(!this.email || !this.password1 || !this.password2){
+      if(!this.username || !this.email || !this.password1 || !this.password2){
         alert('필수 항목을 입력해주세요.')
       }
       axios.post(url + 'registration/', this.$data)
         .then(response => {
-          // console.log('회원가입 성공')
-          // console.log(response)
-          alert('회원가입 성공')
-          this.$router.push('login')
+          alert('회원가입 완료')
+          this.$router.push('/')
         })
         .catch(error => {
           const err = error.response.data
@@ -98,7 +101,7 @@ export default {
   padding: 10vmin 15px;
 }
 .input-wrap>label {
-  width: 95px;
+  width: 125px;
   text-align: start;
 }
 .input-text {
@@ -125,6 +128,10 @@ export default {
   font-family: 'Pretendard-Regular';
   color: white;
   transition: 0.14s all ease-in;
+}
+
+.my-shadow {
+  box-shadow: 2px 2px 10px rgba(133, 133, 133, 0.378);
 }
 
 @media (max-width: 600px) {
