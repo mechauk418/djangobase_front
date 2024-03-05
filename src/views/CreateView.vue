@@ -82,7 +82,7 @@ export default {
       }
       testaxios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/article/', 
+        url: 'http://localhost:8000/article/', 
         data: createdata,
         withCredentials : true,
         headers:{

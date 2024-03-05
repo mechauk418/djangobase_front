@@ -17,7 +17,7 @@ export default {
   },
   methods:{
     checkbtn() {
-      testaxios.delete('http://127.0.0.1:8000/article/' + this.$route.params.pk + '/')
+      testaxios.delete('http://localhost:8000/article/' + this.$route.params.pk + '/')
       .then(res => {
         this.$router.push({name:'articles'})
         })

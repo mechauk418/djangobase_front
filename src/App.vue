@@ -46,7 +46,7 @@ export default {
       createdata.append('password',this.input_password)
       axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/accounts/login/', 
+        url: 'http://localhost:8000/accounts/login/', 
         data: createdata,
         withCredentials:true,
       })

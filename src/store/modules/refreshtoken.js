@@ -9,7 +9,7 @@ const refreshtoken = {
   actions: {
     async refreshtt (dispatch) {
       await axiosRefresh
-        .post('http://127.0.0.1:8000/accounts/token/refresh/') // 로그인 URL로 ID, PW를 보냄
+        .post('http://localhost:8000/accounts/token/refresh/') // 로그인 URL로 ID, PW를 보냄
         .then((response) => {
           const newToken = response.data.access
           localStorage.setItem('access_token', newToken)

@@ -78,7 +78,7 @@ export default {
   mounted() {
     axios({
       method: "GET",
-      url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
+      url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
       withCredentials:true
     })
     .then(res =>{

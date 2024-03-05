@@ -79,14 +79,14 @@ export default {
     const urlParams = url.searchParams
     let test_page = urlParams.get('pages')
     if (test_page==null){
-      axios.get('http://127.0.0.1:8000/article/')
+      axios.get('http://localhost:8000/article/')
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
         this.total_pages = response.data.itemcount
       })
     } else {
-      axios.get('http://127.0.0.1:8000/article/'+'?page='+test_page)
+      axios.get('http://localhost:8000/article/'+'?page='+test_page)
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
@@ -100,7 +100,7 @@ export default {
       this.current_page = val;
       if (this.current_page==1) {
         this.$router.push({ name: 'articles'})
-        axios.get('http://127.0.0.1:8000/article/')
+        axios.get('http://localhost:8000/article/')
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -108,7 +108,7 @@ export default {
         })
       } else {
         this.$router.push({ name: 'articles', query: { pages: this.current_page} })
-        axios.get('http://127.0.0.1:8000/article/' + '?page='+this.current_page)
+        axios.get('http://localhost:8000/article/' + '?page='+this.current_page)
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -140,18 +140,22 @@ td{
 
 .font일반{
   color: blue;
+  font-weight: bold;
 }
 
 .font정보{
   color: green;
+  font-weight: bold;
 }
 
 .font사진{
-  color: rgb(238, 235, 38);
+  color: rgb(167, 165, 26);
+  font-weight: bold;
 }
 
 .font자랑{
   color: rgb(225, 80, 80);
+  font-weight: bold;
 }
 
 .container{

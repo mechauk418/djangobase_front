@@ -26,7 +26,7 @@ const loginStore = {
   actions: {
     login (dispatch, loginObj) {
       axios
-        .post('http://127.0.0.1:8000/accounts/login/', loginObj, { withCredentials : true}) // 로그인 URL로 ID, PW를 보냄
+        .post('http://localhost:8000/accounts/login/', loginObj, { withCredentials : true}) // 로그인 URL로 ID, PW를 보냄
         .then((res) => {
           const token = res.data.access
           localStorage.setItem('access_token', token) // 토큰을 저장함
@@ -54,7 +54,7 @@ const loginStore = {
         })
     },
     kakaologin(dispatch, code){
-      axios.get(`http://127.0.0.1:8000/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
+      axios.get(`http://localhost:8000/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
         console.log(response)
         const token = response.data.access_token
@@ -69,7 +69,7 @@ const loginStore = {
       })
     },
     googlelogin(dispatch, code){
-      axios.get(`http://127.0.0.1:8000/accounts/google/callback/?code=${code}`, {withCredentials:true})
+      axios.get(`http://localhost:8000/accounts/google/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
         const token = response.data.access_token
         localStorage.setItem('access_token', token) // 토큰을 저장함
@@ -84,11 +84,11 @@ const loginStore = {
     logouttest_act ({ commit }) { // 로그아웃 actions
       axios({
         method:'POST',
-        url:'http://127.0.0.1:8000/accounts/logout/',
+        url:'http://localhost:8000/accounts/logout/',
         withCredentials:true
       })
       commit('logoutTest')
-      window.location.href="http://127.0.0.1:8080/"
+      window.location.href="http://localhost:8080/"
     },
     getMemberInfo ({ commit }) { // 토큰으로 유저 정보를 받아오는 코드
       const token = localStorage.getItem('access_token') // 저장된 access 토큰을 가져옴
@@ -98,7 +98,7 @@ const loginStore = {
         }
       }
       axios
-        .get('http://127.0.0.1:8000/accounts/user/', config) // 가져온 토큰을 헤더에 Authorization 로 담아서 요청을 보냄
+        .get('http://localhost:8000/accounts/user/', config) // 가져온 토큰을 헤더에 Authorization 로 담아서 요청을 보냄
         .then((response) => {
           // console.log(response)
           const userInfo = {

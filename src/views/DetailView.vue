@@ -18,8 +18,8 @@
         <button @click="like_article()" class="btn_like"> {{ article_like }} 추천 </button>
       </div>
       <div class="div_btn">
-        <button @click="modify_article" class="btn_crud"> 수정 </button>
-        <button @click="delete_article" class="btn_crud"> 삭제 </button>
+        <button v-if="login_user==article_user" @click="modify_article" class="btn_crud"> 수정 </button>
+        <button v-if="login_user==article_user" @click="delete_article" class="btn_crud"> 삭제 </button>
         <button @click="back_btn" class="btn_crud"> 목록 </button>
       </div>
       <div style="border:0.5px solid black; border-radius: 10px; width:100%; height: 30px; display: flex; align-items: center; background-color: whitesmoke;">
@@ -36,10 +36,8 @@
             </div>
           </div>
           <div class="comment_button" style="display: flex; align-items: center; width: 10%; margin-left: 20px; justify-content: center;">
-            <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(255, 255, 255); border: 1px solid black;">삭제</button>
-            <!-- <div v-if="show[index]" >
-              <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(164, 161, 161); border: 0;">삭제</button>
-            </div> -->
+            <button v-if="login_user" type="button" :class="`${comment.pk}`" @click="commentLike(comment.pk)" style="background-color: rgb(255, 255, 255); border: 1px solid black; margin-right: 1rem;">{{comment.like_count}} 추천</button>
+            <button v-if="login_user==comment.create_username" type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(255, 255, 255); border: 1px solid black;">삭제</button>
           </div>
         </div>
       </div>
@@ -86,7 +84,7 @@ export default {
     }
     axios({
       method: "GET",
-      url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
+      url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
       withCredentials:true
     })
     .then(res =>{
@@ -114,37 +112,20 @@ export default {
       this.$router.push({ name: 'modify', params: { pk: this.$route.params.pk } })
     },
     create_comment() {
-      const comment_data = {
-        'content': this.comments_content,
-      }
-      testaxios.post('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/`, comment_data,
-      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
-      .then((response) => {
-        axios({ // 댓글 작성해서 리스트를 다시 불러옴
-          method: 'GET',
-          url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
-        })
-        .then(res => {
-          this.article = res.data
-          this.article_title = res.data.title
-          this.article_content = res.data.content
-          this.article_user = res.data.createuser
-          this.article_image = res.data.images
-          this.comments_list = res.data.comments
-        })
-        .catch(response => {
-        })
-      })
-    },
-    commentDelete(pk) {
-      axios.delete('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/comment/${pk}`,
-      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')} ,withCredentials: true} )
+      if (this.login_user==null) {
+        alert('로그인이 필요합니다.')
+      } else {
+        const comment_data = {
+          'content': this.comments_content,
+        }
+        testaxios.post('http://localhost:8000/article/' + `${this.$route.params.pk}/comment/`, comment_data,
+        {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
         .then((response) => {
           axios({ // 댓글 작성해서 리스트를 다시 불러옴
             method: 'GET',
-            url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
+            url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
           })
-          .then(response => {
+          .then(res => {
             this.article = res.data
             this.article_title = res.data.title
             this.article_content = res.data.content
@@ -152,21 +133,69 @@ export default {
             this.article_image = res.data.images
             this.comments_list = res.data.comments
           })
+          .catch(response => {
+          })
+        })
+      }
+    },
+    commentDelete(pk) {
+      testaxios.delete('http://localhost:8000/article/' + `${this.$route.params.pk}/comment/${pk}`,
+      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')} ,withCredentials: true} )
+        .then(response => {
+          axios({ // 댓글 작성해서 리스트를 다시 불러옴
+            method: 'GET',
+            url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
+          })
+          .then(res => {
+            this.article = res.data
+            this.comments_list = res.data.comments
+          })
         })
     },
+    commentLike(pk) {
+      if (this.login_user==null){
+        alert('로그인이 필요합니다.')
+      } else {
+        testaxios.post('http://localhost:8000/article/' + `${this.$route.params.pk}/comment/${pk}`+'/like/',
+        {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')} ,withCredentials: true} )
+          .then((response) => {
+            if (response.data.response=='이미 추천하셨습니다.') {
+              alert('이미 추천하셨습니다.')
+            } else {
+              axios({
+                method: 'GET',
+                url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
+              })
+              .then(res => {
+                this.article = res.data
+                this.comments_list = res.data.comments
+              })
+            }
+          })
+      }
+    },
     like_article(){
-      testaxios.post('http://127.0.0.1:8000/article/' + `${this.$route.params.pk}/like/`,
-      {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
-      .then((response) => {
-        axios({
-          method: "GET",
-          url: 'http://127.0.0.1:8000/article/' + this.$route.params.pk + '/',
-          withCredentials:true
+      if (this.login_user==null){
+        alert('로그인이 필요합니다.')
+      } else {
+        testaxios.post('http://localhost:8000/article/' + `${this.$route.params.pk}/like/`,
+        {headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
+        .then((response) => {
+          if (response.data.response=='이미 추천하셨습니다.') {
+            alert('이미 추천하셨습니다.')
+          } else {
+            axios({
+              method: "GET",
+              url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
+              withCredentials:true
+            })
+            .then(res =>{
+              this.article_like = res.data.like_count
+            })
+          }
+
         })
-        .then(res =>{
-          this.article_like = res.data.like_count
-        })
-      })
+      }
     },
     back_btn(){
       this.$router.go(-1)
