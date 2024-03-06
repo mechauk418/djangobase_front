@@ -26,7 +26,7 @@
 </template>
 <script>
 import axios from 'axios'
-const url = 'http://localhost:8000/accounts/';
+const url = 'http://localhost:8000/api/accounts/';
 
 export default {
   name: 'SignupForm',

@@ -14,17 +14,6 @@
         </div>
       </div>
 
-      <!-- <div style="display: flex; margin-bottom: 2rem;">
-        <div style="width:400px; text-align: left;">
-          <label for="createuser">작성자 </label>
-          <input type="text" id="createuser" v-model="createuser" class="input-text" style="width:70%;">
-        </div>
-        <div style="width:400px; text-align: left;">
-          <label for="password">비밀번호 </label>
-          <input type="password" id="password" v-model="password" class="input-text" style="width:70%;">
-        </div>
-      </div> -->
-
       <div class="articlecontent">
         <textarea v-model="content" id="content"></textarea>
       </div>
@@ -71,9 +60,6 @@ export default {
   methods:{
     create () {
       const createdata = new FormData()
-      createdata.title = this.title
-      createdata.content = this.content
-      createdata.images = this.images
       createdata.append('title',this.title)
       createdata.append('content',this.content)
       createdata.append('subject',this.selected2)
@@ -82,7 +68,7 @@ export default {
       }
       testaxios({
         method: 'POST',
-        url: 'http://localhost:8000/article/', 
+        url: 'http://localhost:8000/api/article/', 
         data: createdata,
         withCredentials : true,
         headers:{
@@ -93,7 +79,7 @@ export default {
       })
       .then(response => {
         const article_pk = response.data.pk
-        this.$router.push({name:'articles', params:{pk:article_pk}})
+        this.$router.push({name:'detail', params:{pk:article_pk}})
       })
     },
     OnArticleImage() {
@@ -104,27 +90,27 @@ export default {
 </script>
     
 <style>
-  .articlebox {
-    width : 800px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid black;
-    background-color: whitesmoke;
-  }
-  .articletitle {
-    display: flex;
-    margin-bottom: 20px;
+.articlebox {
+  width : 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid black;
+  background-color: whitesmoke;
+}
+.articletitle {
+  display: flex;
+  margin-bottom: 20px;
 
-  }
-  .articlecontent{
-    width:100%;
-  }
-  textarea {
-    width:100%;
-    height: 600px;
-    resize: none;
-    margin-bottom: 20px;
-    font-size: medium;
-    font-family: 'Courier New', Courier, monospace;
-  }
+}
+.articlecontent{
+  width:100%;
+}
+textarea {
+  width:100%;
+  height: 600px;
+  resize: none;
+  margin-bottom: 20px;
+  font-size: medium;
+  font-family: 'Courier New', Courier, monospace;
+}
 </style>
