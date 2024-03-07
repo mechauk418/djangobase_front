@@ -30,7 +30,6 @@ const loginStore = {
         .then((res) => {
           const token = res.data.access
           localStorage.setItem('access_token', token) // 토큰을 저장함
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`
           this.dispatch('getMemberInfo') // 유저 정보를 가져오는 actions 호출
         })
         .catch((error) => {
@@ -59,7 +58,6 @@ const loginStore = {
         console.log(response)
         const token = response.data.access_token
         localStorage.setItem('access_token', token) // 토큰을 저장함
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`
         this.dispatch('getMemberInfo') // 유저 정보를 가져오는 actions 호출
       })
       .catch((err)=>{
@@ -73,7 +71,6 @@ const loginStore = {
       .then((response) => {
         const token = response.data.access_token
         localStorage.setItem('access_token', token) // 토큰을 저장함
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`
         this.dispatch('getMemberInfo') // 유저 정보를 가져오는 actions 호출
       })
       .catch((err)=>{

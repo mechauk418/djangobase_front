@@ -37,8 +37,7 @@ export default {
       content: '',
       createuser:'',
       password:'',
-      images:'',
-      images2:'',
+      images:null,
       selected2: "",
       subject:"",
       selectList: [
@@ -61,7 +60,8 @@ export default {
     axios({
       method: "GET",
       url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
-      withCredentials:true
+      withCredentials:true,
+      headers:{Authorization:null}
     })
     .then(res =>{
       this.article = res.data
@@ -86,11 +86,13 @@ export default {
       createdata.append('title',this.title)
       createdata.append('content',this.content)
       createdata.append('subject',this.subject)
-      for (const i of this.images) {
-        createdata.append('image',i)
+      if (this.images != null) {
+        for (const i of this.images) {
+          createdata.append('image',i)
+        }
       }
       testaxios({
-        method: 'PUT',
+        method: 'PATCH',
         url: 'http://localhost:8000/api/article/'+ this.$route.params.pk +'/', 
         data: createdata,
         withCredentials : true,
@@ -106,7 +108,7 @@ export default {
     },
     OnArticleImage() {
       this.images = this.$refs.ArticleImage.files
-    },
+    }
   }
 }
 </script>

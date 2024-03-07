@@ -85,7 +85,10 @@ export default {
     axios({
       method: "GET",
       url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
-      withCredentials:true
+      withCredentials:true,
+      headers:{
+        Authorization:null
+      }
     })
     .then(res =>{
       this.article = res.data
@@ -124,6 +127,9 @@ export default {
           axios({ // 댓글 작성해서 리스트를 다시 불러옴
             method: 'GET',
             url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
+            headers:{
+              Authorization:null
+            }
           })
           .then(res => {
             this.article = res.data
@@ -145,6 +151,9 @@ export default {
           axios({ // 댓글 작성해서 리스트를 다시 불러옴
             method: 'GET',
             url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
+            headers:{
+              Authorization:null
+            }
           })
           .then(res => {
             this.article = res.data
@@ -165,6 +174,9 @@ export default {
               axios({
                 method: 'GET',
                 url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
+                headers:{
+                  Authorization:null
+                }
               })
               .then(res => {
                 this.article = res.data
@@ -187,7 +199,10 @@ export default {
             axios({
               method: "GET",
               url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
-              withCredentials:true
+              withCredentials:true,
+              headers:{
+                  Authorization:null
+                }
             })
             .then(res =>{
               this.article_like = res.data.like_count
