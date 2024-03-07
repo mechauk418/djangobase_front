@@ -85,7 +85,7 @@ const loginStore = {
         withCredentials:true
       })
       commit('logoutTest')
-      window.location.href="http://localhost:8080/"
+      window.location.href="http://www.isdfans.site/"
     },
     getMemberInfo ({ commit }) { // 토큰으로 유저 정보를 받아오는 코드
       const token = localStorage.getItem('access_token') // 저장된 access 토큰을 가져옴
