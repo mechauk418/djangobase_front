@@ -26,7 +26,7 @@
 </template>
 <script>
 import axios from 'axios'
-const url = 'http://localhost:8000/api/accounts/';
+const url = 'https://api.isdfans.site/api/accounts/';
 
 export default {
   name: 'SignupForm',

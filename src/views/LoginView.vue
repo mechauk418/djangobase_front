@@ -57,12 +57,12 @@ export default {
     },
     kakaologin() {
       const KAKAO_REST_API_KEY =process.env.VUE_APP_KAKAO_REST_API_KEY
-      const KAKAO_REDIRECT_URI = 'http://localhost:8000/api/login'
+      const KAKAO_REDIRECT_URI = 'https://api.isdfans.site/api/login'
       window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email`
     },
     googlelogin() {
       const SOCIAL_AUTH_GOOGLE_CLIENT_ID= process.env.VUE_APP_SOCIAL_AUTH_GOOGLE_CLIENT_ID
-      const GOOGLE_CALLBACK_URI= 'http://localhost:8000/api/login'
+      const GOOGLE_CALLBACK_URI= 'https://api.isdfans.site/api/login'
       const scope = "https://www.googleapis.com/auth/userinfo.email"
       window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${SOCIAL_AUTH_GOOGLE_CLIENT_ID}&response_type=code&redirect_uri=${GOOGLE_CALLBACK_URI}&scope=${scope}`
     },

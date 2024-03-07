@@ -371,7 +371,7 @@ export default {
   methods:{
     searchbtn() {
       this.$router.push(this.search_key)
-      axios.get("http://localhost:8000/gamerecord/getsearch/" + this.search_key + '/' + this.season_select)
+      axios.get("https://api.isdfans.site/amerecord/getsearch/" + this.search_key + '/' + this.season_select)
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
@@ -381,7 +381,7 @@ export default {
     nextbtn() {
       if (this.selected_ch) {
         this.pages+=1
-        axios.get("http://localhost:8000/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select + '?character='+this.selected_ch +'&page='+this.pages)
+        axios.get("https://api.isdfans.site/amerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select + '?character='+this.selected_ch +'&page='+this.pages)
         .then(res => {
             this.gamedetail = res.data.results
             this.show = Array(this.gamedetail.length).fill(false)
@@ -390,7 +390,7 @@ export default {
       }
       else {
         this.pages+=1
-        axios.get("http://localhost:8000/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select +'?page='+this.pages)
+        axios.get("https://api.isdfans.site/amerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select +'?page='+this.pages)
         .then(res => {
             this.gamedetail = res.data.results
             this.show = Array(this.gamedetail.length).fill(false)
@@ -401,7 +401,7 @@ export default {
     prevbtn() {
       if (this.selected_ch) {
         this.pages-=1
-        axios.get("http://localhost:8000/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select + '?character='+this.selected_ch +'&page='+this.pages)
+        axios.get("https://api.isdfans.site/amerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select + '?character='+this.selected_ch +'&page='+this.pages)
         .then(res => {
             this.gamedetail = res.data.results
             this.show = Array(this.gamedetail.length).fill(false)
@@ -410,7 +410,7 @@ export default {
       }
       else {
         this.pages-=1
-        axios.get("http://localhost:8000/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select +'?page='+this.pages)
+        axios.get("https://api.isdfans.site/amerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select +'?page='+this.pages)
         .then(res => {
             this.gamedetail = res.data.results
             this.show = Array(this.gamedetail.length).fill(false)
@@ -419,7 +419,7 @@ export default {
       }
     },
     toggle(index,gamenumber) {
-      axios.get("http://localhost:8000/gamerecord/recorddetail/" + gamenumber)
+      axios.get("https://api.isdfans.site/amerecord/recorddetail/" + gamenumber)
         .then(res => {
             const data = res.data
             this.detail.splice(index, 0, data)
@@ -432,7 +432,7 @@ export default {
     },
     async userclickbtn(value) {
       this.isLoading = true
-      await axios.get("http://localhost:8000/gamerecord/getsearch/" + value + '/')
+      await axios.get("https://api.isdfans.site/amerecord/getsearch/" + value + '/')
       .then(res => {
         this.isLoading = false
         window.location.href = 'https://www.rollthun.site/search/' + value
@@ -441,7 +441,7 @@ export default {
     },
     async refreshbtn() {
       this.infoloading = true
-      await axios.get("http://localhost:8000/gamerecord/refresh/" + `${this.$route.params.nickname}`)
+      await axios.get("https://api.isdfans.site/amerecord/refresh/" + `${this.$route.params.nickname}`)
       .then(res=>{
         this.infoloading=false
         this.$router.go(0)
@@ -452,13 +452,13 @@ export default {
     },
     async pageData() {
       
-      const sdData = await axios.get("http://localhost:8000/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
-      const dData = await axios.get("http://localhost:8000/gamerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
+      const sdData = await axios.get("https://api.isdfans.site/amerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
+      const dData = await axios.get("https://api.isdfans.site/amerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
       if ('message' in dData.data){
         this.userstats = dData.data
       }
-      const useData = await axios.get("http://localhost:8000/gamerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
-      const rcData = await axios.get("http://localhost:8000/gamerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
+      const useData = await axios.get("https://api.isdfans.site/amerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
+      const rcData = await axios.get("https://api.isdfans.site/amerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
       
       this.gamedetail = sdData.data.results
       this.show = Array(this.gamedetail.length).fill(false)
@@ -469,12 +469,12 @@ export default {
     },
     async setSelect(event) {
       if (this.selected_ch) {
-        const sdData = await axios.get("http://localhost:8000/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select + '?character='+ this.selected_ch)
+        const sdData = await axios.get("https://api.isdfans.site/amerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select + '?character='+ this.selected_ch)
         this.gamedetail = sdData.data.results
         this.show = Array(this.gamedetail.length).fill(false)
       }
       else {
-        const sdData = await axios.get("http://localhost:8000/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
+        const sdData = await axios.get("https://api.isdfans.site/amerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
         this.gamedetail = sdData.data.results
         this.show = Array(this.gamedetail.length).fill(false)
       }

@@ -59,7 +59,7 @@ export default {
   mounted() {
     axios({
       method: "GET",
-      url: 'http://localhost:8000/api/article/' + this.$route.params.pk + '/',
+      url: 'https://api.isdfans.site/api/article/' + this.$route.params.pk + '/',
       withCredentials:true,
       headers:{Authorization:null}
     })
@@ -93,7 +93,7 @@ export default {
       }
       testaxios({
         method: 'PATCH',
-        url: 'http://localhost:8000/api/article/'+ this.$route.params.pk +'/', 
+        url: 'https://api.isdfans.site/api/article/'+ this.$route.params.pk +'/', 
         data: createdata,
         withCredentials : true,
         headers:{

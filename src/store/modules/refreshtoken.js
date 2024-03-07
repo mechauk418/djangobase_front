@@ -9,7 +9,7 @@ const refreshtoken = {
   actions: {
     async refreshtt (dispatch) {
       await axiosRefresh
-        .post('http://localhost:8000/api/accounts/token/refresh/') // 로그인 URL로 ID, PW를 보냄
+        .post('https://api.isdfans.site/api/accounts/token/refresh/') // 로그인 URL로 ID, PW를 보냄
         .then((response) => {
           const newToken = response.data.access
           localStorage.setItem('access_token', newToken)

@@ -26,7 +26,7 @@ const loginStore = {
   actions: {
     login (dispatch, loginObj) {
       axios
-        .post('http://localhost:8000/api/accounts/login/', loginObj, { withCredentials : true}) // 로그인 URL로 ID, PW를 보냄
+        .post('https://api.isdfans.site/api/accounts/login/', loginObj, { withCredentials : true}) // 로그인 URL로 ID, PW를 보냄
         .then((res) => {
           const token = res.data.access
           localStorage.setItem('access_token', token) // 토큰을 저장함
@@ -53,7 +53,7 @@ const loginStore = {
         })
     },
     kakaologin(dispatch, code){
-      axios.get(`http://localhost:8000/api/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
+      axios.get(`https://api.isdfans.site/api/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
         console.log(response)
         const token = response.data.access_token
@@ -67,7 +67,7 @@ const loginStore = {
       })
     },
     googlelogin(dispatch, code){
-      axios.get(`http://localhost:8000/api/accounts/google/callback/?code=${code}`, {withCredentials:true})
+      axios.get(`https://api.isdfans.site/api/accounts/google/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
         const token = response.data.access_token
         localStorage.setItem('access_token', token) // 토큰을 저장함
@@ -81,7 +81,7 @@ const loginStore = {
     logouttest_act ({ commit }) { // 로그아웃 actions
       axios({
         method:'POST',
-        url:'http://localhost:8000/api/accounts/logout/',
+        url:'https://api.isdfans.site/api/accounts/logout/',
         withCredentials:true
       })
       commit('logoutTest')
@@ -95,7 +95,7 @@ const loginStore = {
         }
       }
       axios
-        .get('http://localhost:8000/api/accounts/user/', config) // 가져온 토큰을 헤더에 Authorization 로 담아서 요청을 보냄
+        .get('https://api.isdfans.site/api/accounts/user/', config) // 가져온 토큰을 헤더에 Authorization 로 담아서 요청을 보냄
         .then((response) => {
           // console.log(response)
           const userInfo = {
