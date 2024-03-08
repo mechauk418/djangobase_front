@@ -80,14 +80,14 @@ export default {
     const urlParams = url.searchParams
     let test_page = urlParams.get('pages')
     if (test_page==null){
-      testaxios.get('https://api.isdfans.site/api/article/bestarticle/')
+      testaxios.get('https://api.isdfans.site/article/bestarticle/')
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
         this.total_pages = response.data.itemcount
       })
     } else {
-      testaxios.get('https://api.isdfans.site/api/article/bestarticle/'+'?page='+test_page)
+      testaxios.get('https://api.isdfans.site/article/bestarticle/'+'?page='+test_page)
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
@@ -101,7 +101,7 @@ export default {
       this.current_page = val;
       if (this.current_page==1) {
         this.$router.push({ name: 'articles'})
-        testaxios.get('https://api.isdfans.site/api/article/bestarticle/')
+        testaxios.get('https://api.isdfans.site/article/bestarticle/')
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -109,7 +109,7 @@ export default {
         })
       } else {
         this.$router.push({ name: 'articles', query: { pages: this.current_page} })
-        testaxios.get('https://api.isdfans.site/api/article/bestarticle/' + '?page='+this.current_page)
+        testaxios.get('https://api.isdfans.site/article/bestarticle/' + '?page='+this.current_page)
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage

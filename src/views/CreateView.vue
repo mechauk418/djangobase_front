@@ -68,7 +68,7 @@ export default {
       }
       testaxios({
         method: 'POST',
-        url: 'https://api.isdfans.site/api/article/', 
+        url: 'https://api.isdfans.site/article/', 
         data: createdata,
         withCredentials : true,
         headers:{

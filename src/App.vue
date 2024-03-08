@@ -46,7 +46,7 @@ export default {
       createdata.append('password',this.input_password)
       axios({
         method: 'POST',
-        url: 'https://api.isdfans.site/api/accounts/login/', 
+        url: 'https://api.isdfans.site/accounts/login/', 
         data: createdata,
         withCredentials:true,
       })
