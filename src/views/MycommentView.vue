@@ -8,21 +8,16 @@
     </div>
     <div class="container">
       <div style="margin: 0 auto; display: flex; width:80%; height: 50px;">
-        <div style="margin-right:1rem;">
-          <router-link :to="{name:'bestarticles'}">
-            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 인기글 </button>
-          </router-link>
+        <div>
+          <button @click="prev" v-if="page_prev"> 인기글 </button>
         </div>
-        <div v-if="islogin" style="margin-right:1rem;">
-          <router-link :to="{name:'myarticles'}">
-            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 내 글 </button>
-          </router-link>
+        <div>
+          <button @click="prev" v-if="page_prev"> 내 글 </button>
         </div>
-        <div v-if="islogin">
-          <router-link :to="{name:'mycomments'}">
-            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 내 댓글 </button>
-          </router-link>
+        <div>
+          <button @click="prev" v-if="page_prev"> 내 댓글 </button>
         </div>
+
       </div>
 
       <table style="margin : 0 auto; width:80%; border-collapse: collapse; margin-bottom: 2rem;">
@@ -65,14 +60,14 @@
   
 <script>
 import axios from 'axios'
-import loginStore from '../store/index'
+import testaxios from '@/axios';
 export default {
   data () {
     return {
       articles: [],
       page_next:null,
       page_prev:null,
-      islogin:false,
+      islogin:'',
       year:null,
       month:null,
       date:null,
@@ -81,21 +76,18 @@ export default {
     }
   },
   mounted() {
-    if (loginStore.state.loginStore.isLogin) {
-      this.islogin = loginStore.state.loginStore.isLogin
-    }
     const url = new URL(window.location.href);
     const urlParams = url.searchParams
     let test_page = urlParams.get('pages')
     if (test_page==null){
-      axios.get('https://api.isdfans.site/article/', {headers:{Authorization:null}})
+      testaxios.get('https://api.isdfans.site/article/mycomment/')
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
         this.total_pages = response.data.itemcount
       })
     } else {
-      axios.get('https://api.isdfans.site/article/'+'?page='+test_page, {headers:{Authorization:null}})
+      testaxios.get('https://api.isdfans.site/article/mycomment/'+'?page='+test_page)
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
@@ -109,7 +101,7 @@ export default {
       this.current_page = val;
       if (this.current_page==1) {
         this.$router.push({ name: 'articles'})
-        axios.get('https://api.isdfans.site/article/')
+        testaxios.get('https://api.isdfans.site/article/mycomment/')
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -117,7 +109,7 @@ export default {
         })
       } else {
         this.$router.push({ name: 'articles', query: { pages: this.current_page} })
-        axios.get('https://api.isdfans.site/article/' + '?page='+this.current_page, {headers:{Authorization:null}})
+        testaxios.get('https://api.isdfans.site/article/mycomment/' + '?page='+this.current_page)
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
