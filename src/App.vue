@@ -6,7 +6,7 @@
     </div>
     <div v-show="!logincheck" style="position: absolute; left: 70%; top:35%;">
       <input type="text" id="email" v-model="input_email" autocomplete="off" style="margin-left:3px; margin-right: 3px; width: 7rem;" placeholder="아이디">
-      <input type="password" id="password" v-model="input_password" autocomplete="off" style="margin-left:3px; margin-right: 3px; width: 7rem;" placeholder="비밀번호">
+      <input type="password" id="password" @keyup.enter="loginbtn()" v-model="input_password" autocomplete="off" style="margin-left:3px; margin-right: 3px; width: 7rem;" placeholder="비밀번호">
       <button @click="loginbtn()" style="border: 1px solid black; background-color: white; margin-left:3px; margin-right: 3px;" > 로그인 </button>
       <button @click="signupbtn()" style="border: 1px solid black; background-color: white; margin-left:3px; margin-right: 3px;" > 회원가입 </button>
     </div>
