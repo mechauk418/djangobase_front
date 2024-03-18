@@ -10,7 +10,11 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+  mounted(){
+  },
   methods:{
     vlog(){
       window.open('https://velog.io/@mechauk418/series/FastAPI%EB%A1%9C-%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0')

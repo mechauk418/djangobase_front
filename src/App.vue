@@ -2,7 +2,8 @@
   <nav>
     <div style="width:100%;">
       <router-link to="/">Home</router-link> |
-      <router-link to="/articles">Article</router-link>
+      <router-link to="/articles">Article</router-link> |
+      <router-link to="/login">Login</router-link>
     </div>
     <div v-show="!logincheck" style="position: absolute; left: 70%; top:35%;">
       <input type="text" id="email" v-model="input_email" autocomplete="off" style="margin-left:3px; margin-right: 3px; width: 7rem;" placeholder="아이디">

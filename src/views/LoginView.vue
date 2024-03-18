@@ -166,6 +166,9 @@ export default {
   padding: 0;
   margin: 0 15px;
 }
+.my-shadow {
+  box-shadow: 2px 2px 10px rgba(133, 133, 133, 0.378);
+}
 @media (max-width: 600px) {
   .social-container>img {
     width: 50px;
