@@ -57,7 +57,7 @@ export default {
     },
     kakaologin() {
       const KAKAO_REST_API_KEY =process.env.VUE_APP_KAKAO_REST_API_KEY
-      const KAKAO_REDIRECT_URI = 'https://api.isdfans.site/login'
+      const KAKAO_REDIRECT_URI = 'http://localhost:8080/login'
       window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email`
     },
     googlelogin() {

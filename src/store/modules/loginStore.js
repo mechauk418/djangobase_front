@@ -53,7 +53,8 @@ const loginStore = {
         })
     },
     kakaologin(dispatch, code){
-      axios.get(`https://api.isdfans.site/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
+      console.log(code)
+      axios.get(`http://localhost:8000/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
         console.log(response)
         const token = response.data.access_token
