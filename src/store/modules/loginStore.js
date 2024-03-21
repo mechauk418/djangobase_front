@@ -53,11 +53,10 @@ const loginStore = {
         })
     },
     kakaologin(dispatch, code){
-      console.log(code)
-      axios.get(`http://localhost:8000/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
+      axios.get(`https://api.isdfans.site/accounts/kakao/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
         console.log(response)
-        const token = response.data.access_token
+        const token = response.data.access
         localStorage.setItem('access_token', token) // 토큰을 저장함
         this.dispatch('getMemberInfo') // 유저 정보를 가져오는 actions 호출
       })
@@ -105,7 +104,7 @@ const loginStore = {
             username:response.data.username,
           } // 유저 정보를 받아옴
           commit('loginSuccess', userInfo) // mutations 호출
-          window.location.href=location.href;
+          window.location.href='https://www.isdfans.site/'
           // router.push('logincheck')
         })
         .catch((err) => {
