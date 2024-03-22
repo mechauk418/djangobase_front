@@ -59,6 +59,10 @@
         @current-change=page_change
         />
       </div>
+      <div style="border: 1px solid black;">
+        <input type="text" v-model="search_key" @keyup.enter="searchbtn" style="border: 0;">
+        <button @click="searchbtn" style="border: 0; background-color: white;"> ■ </button>
+      </div>
     </div>
   </div>
 </template>
@@ -78,6 +82,7 @@ export default {
       date:null,
       total_pages:null,
       current_page:null,
+      search_key:null,
     }
   },
   mounted() {
@@ -88,14 +93,14 @@ export default {
     const urlParams = url.searchParams
     let test_page = urlParams.get('pages')
     if (test_page==null){
-      axios.get('https://api.isdfans.site/article/', {headers:{Authorization:null}})
+      axios.get('https://www.isdfans.site/article/', {headers:{Authorization:null}})
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
         this.total_pages = response.data.itemcount
       })
     } else {
-      axios.get('https://api.isdfans.site/article/'+'?page='+test_page, {headers:{Authorization:null}})
+      axios.get('https://www.isdfans.site/article/'+'?page='+test_page, {headers:{Authorization:null}})
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
@@ -109,7 +114,7 @@ export default {
       this.current_page = val;
       if (this.current_page==1) {
         this.$router.push({ name: 'articles'})
-        axios.get('https://api.isdfans.site/article/')
+        axios.get('https://www.isdfans.site/article/')
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -117,7 +122,7 @@ export default {
         })
       } else {
         this.$router.push({ name: 'articles', query: { pages: this.current_page} })
-        axios.get('https://api.isdfans.site/article/' + '?page='+this.current_page, {headers:{Authorization:null}})
+        axios.get('https://www.isdfans.site/article/' + '?page='+this.current_page, {headers:{Authorization:null}})
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -125,7 +130,18 @@ export default {
         })
       }
       
-    }
+    },
+    async searchbtn() {
+      await axios.get("https://www.isdfans.site/article/?search=" + this.search_key + '&title_only=True', {headers:{Authorization:null}})
+      .then(response => {
+        console.log(response)
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+        // this.$router.push('search/'+this.search_key)
+      }
+      )
+    },
   }
 }
 </script>

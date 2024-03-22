@@ -5,7 +5,7 @@
       <button @click="searchbtn" style="border: 0; background-color: white;"> ■ </button>
     </div>
     <div v-if="isLoading" class="loading" > 
-      <img src="../assets/vic.gif" style="height: 100%;">
+      <!-- <img src="../assets/vic.gif" style="height: 100%;"> -->
     </div>
     <!-- <div v-for="(game,index) in gamedetail" :key="index" style="border: 1px solid black;">
       <p>{{ game.id }}</p>
