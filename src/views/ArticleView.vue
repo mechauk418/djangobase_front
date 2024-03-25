@@ -24,8 +24,15 @@
           </router-link>
         </div>
       </div>
-
+      
       <table style="margin : 0 auto; width:80%; border-collapse: collapse; margin-bottom: 2rem;">
+        <tr>
+          <th style="text-align: start; height: 3rem;" colspan="7">
+            <span style="margin-left:3rem;">일반</span>
+            <span style="margin-left:3rem;">정보</span>
+            <span style="margin-left:3rem;">사진</span>
+          </th>
+        </tr>
         <tr style="height: 3rem;">
           <th style="font-size: 13px;"> 글번호 </th>
           <th style="font-size: 13px;"> 말머리 </th>
@@ -59,9 +66,14 @@
         @current-change=page_change
         />
       </div>
-      <div style="border: 1px solid black;">
-        <input type="text" v-model="search_key" @keyup.enter="searchbtn" style="border: 0;">
-        <button @click="searchbtn" style="border: 0; background-color: white;"> ■ </button>
+      <div style="height: 2rem; display: flex; margin-top:1rem; justify-content: center;">
+        <select v-model="selected2" style="width: 10%;">
+          <option v-for="item in selectList" :key="item.name" :value="item.name"> {{ item.name }}</option>
+        </select>
+        <input type="text" v-model="search_key" @keyup.enter="searchbtn" style="border: 1px solid black; width:20%;">
+        <button @click="searchbtn" style="border: 0; background-color: white; width:5%;">
+          <img src="../assets/searchicon.png" style="width:40%">
+        </button>
       </div>
     </div>
   </div>
@@ -83,6 +95,14 @@ export default {
       total_pages:null,
       current_page:null,
       search_key:null,
+      selected2: "제목",
+      selectList: [
+        { name: "제목"},
+        { name: "내용"},
+        { name: "제목+내용"},
+        { name: "작성자"},
+      ],
+      search_subject:null,
     }
   },
   mounted() {
@@ -93,14 +113,14 @@ export default {
     const urlParams = url.searchParams
     let test_page = urlParams.get('pages')
     if (test_page==null){
-      axios.get('https://www.isdfans.site/article/', {headers:{Authorization:null}})
+      axios.get('https://api.isdfans.site/article/', {headers:{Authorization:null}})
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
         this.total_pages = response.data.itemcount
       })
     } else {
-      axios.get('https://www.isdfans.site/article/'+'?page='+test_page, {headers:{Authorization:null}})
+      axios.get('https://api.isdfans.site/article/'+'?page='+test_page, {headers:{Authorization:null}})
       .then(response => {
         this.articles = response.data.results
         this.current_page = response.data.curPage
@@ -114,7 +134,7 @@ export default {
       this.current_page = val;
       if (this.current_page==1) {
         this.$router.push({ name: 'articles'})
-        axios.get('https://www.isdfans.site/article/')
+        axios.get('https://api.isdfans.site/article/')
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -122,7 +142,7 @@ export default {
         })
       } else {
         this.$router.push({ name: 'articles', query: { pages: this.current_page} })
-        axios.get('https://www.isdfans.site/article/' + '?page='+this.current_page, {headers:{Authorization:null}})
+        axios.get('https://api.isdfans.site/article/' + '?page='+this.current_page, {headers:{Authorization:null}})
         .then(response => {
           this.articles = response.data.results
           this.current_page = response.data.curPage
@@ -132,7 +152,16 @@ export default {
       
     },
     async searchbtn() {
-      await axios.get("https://www.isdfans.site/article/?search=" + this.search_key + '&title_only=True', {headers:{Authorization:null}})
+      if (this.selected2=="제목") {
+        this.search_subject="title_only"
+      } else if (this.selected2=="내용") {
+        this.search_subject="content_only"
+      } else if (this.selected2=="제목+내용") {
+        this.search_subject="title_content_only"
+      } else {
+        this.search_subject="create_user__username_only"
+      }
+      await axios.get("https://api.isdfans.site/article/?search=" + this.search_key + '&' + this.search_subject + '=True', {headers:{Authorization:null}})
       .then(response => {
         console.log(response)
         this.articles = response.data.results
