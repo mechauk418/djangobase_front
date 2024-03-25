@@ -28,9 +28,10 @@
       <table style="margin : 0 auto; width:80%; border-collapse: collapse; margin-bottom: 2rem;">
         <tr>
           <th style="text-align: start; height: 3rem;" colspan="7">
-            <span style="margin-left:3rem;">일반</span>
-            <span style="margin-left:3rem;">정보</span>
-            <span style="margin-left:3rem;">사진</span>
+            <span style="margin-left:3rem;" @click="subject_fliter1">일반</span>
+            <span style="margin-left:3rem;" @click="subject_fliter2">정보</span>
+            <span style="margin-left:3rem;" @click="subject_fliter3">사진</span>
+            <span style="margin-left:3rem;" @click="subject_fliter4">자랑</span>
           </th>
         </tr>
         <tr style="height: 3rem;">
@@ -162,6 +163,50 @@ export default {
         this.search_subject="create_user__username_only"
       }
       await axios.get("https://api.isdfans.site/article/?search=" + this.search_key + '&' + this.search_subject + '=True', {headers:{Authorization:null}})
+      .then(response => {
+        console.log(response)
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+        // this.$router.push('search/'+this.search_key)
+      }
+      )
+    },
+    subject_fliter1() {
+      axios.get("https://api.isdfans.site/article/?subject="+"일반", {headers:{Authorization:null}})
+      .then(response => {
+        console.log(response)
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+        // this.$router.push('search/'+this.search_key)
+      }
+      )
+    },
+    subject_fliter2() {
+      axios.get("https://api.isdfans.site/article/?subject="+"정보", {headers:{Authorization:null}})
+      .then(response => {
+        console.log(response)
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+        // this.$router.push('search/'+this.search_key)
+      }
+      )
+    },
+    subject_fliter3() {
+      axios.get("https://api.isdfans.site/article/?subject="+"사진", {headers:{Authorization:null}})
+      .then(response => {
+        console.log(response)
+        this.articles = response.data.results
+        this.current_page = response.data.curPage
+        this.total_pages = response.data.itemcount
+        // this.$router.push('search/'+this.search_key)
+      }
+      )
+    },
+    subject_fliter4() {
+      axios.get("https://api.isdfans.site/article/?subject="+"자랑", {headers:{Authorization:null}})
       .then(response => {
         console.log(response)
         this.articles = response.data.results
