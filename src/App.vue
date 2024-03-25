@@ -2,7 +2,7 @@
   <nav>
     <div style="width:100%;">
       <router-link to="/">Home</router-link> |
-      <router-link to="/articles">Article</router-link> |
+      <a href="https://www.isdfans.site/articles">Article</a> |
       <router-link to="/login">Login</router-link>
     </div>
     <div v-show="!logincheck" style="position: absolute; left: 70%; top:35%;">
@@ -85,7 +85,7 @@ nav a {
   color: #2c3e50;
 }
 
-nav a.router-link-exact-active {
+/* nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>
