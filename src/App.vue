@@ -3,7 +3,7 @@
     <div style="width:100%;">
       <router-link to="/">Home</router-link> |
       <a href="https://www.isdfans.site/articles">Article</a> |
-      <router-link to="/login">Login</router-link>
+      <router-link to="/login" v-show="!logincheck">Login</router-link>
     </div>
     <div v-show="!logincheck" style="position: absolute; left: 70%; top:35%;">
       <input type="text" id="email" v-model="input_email" autocomplete="off" style="margin-left:3px; margin-right: 3px; width: 7rem;" placeholder="아이디">
