@@ -69,7 +69,7 @@ const loginStore = {
     googlelogin(dispatch, code){
       axios.get(`https://api.isdfans.site/accounts/google/callback/?code=${code}`, {withCredentials:true})
       .then((response) => {
-        const token = response.data.access_token
+        const token = response.data.access
         localStorage.setItem('access_token', token) // 토큰을 저장함
         this.dispatch('getMemberInfo') // 유저 정보를 가져오는 actions 호출
       })
