@@ -39,7 +39,7 @@ export default {
       password:'',
       images:'',
       images2:'',
-      selected2: "0",
+      selected2: "일반",
       selectList: [
         { name: "일반", value: "0" },
         { name: "정보", value: "1" },
