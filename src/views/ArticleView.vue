@@ -10,17 +10,17 @@
       <div style="margin: 0 auto; display: flex; width:80%; height: 50px;">
         <div style="margin-right:1rem;">
           <router-link :to="{name:'bestarticles'}">
-            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 인기글 </button>
+            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large; cursor: pointer;"> 인기글 </button>
           </router-link>
         </div>
         <div v-if="islogin" style="margin-right:1rem;">
           <router-link :to="{name:'myarticles'}">
-            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 내 글 </button>
+            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large; cursor: pointer;"> 내 글 </button>
           </router-link>
         </div>
         <div v-if="islogin">
           <router-link :to="{name:'mycomments'}">
-            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 내 댓글 </button>
+            <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large; cursor: pointer;"> 내 댓글 </button>
           </router-link>
         </div>
       </div>
@@ -28,10 +28,10 @@
       <table style="margin : 0 auto; width:80%; border-collapse: collapse; margin-bottom: 2rem;">
         <tr>
           <th style="text-align: start; height: 3rem;" colspan="7">
-            <span style="margin-left:3rem;" @click="subject_fliter1">일반</span>
-            <span style="margin-left:3rem;" @click="subject_fliter2">정보</span>
-            <span style="margin-left:3rem;" @click="subject_fliter3">사진</span>
-            <span style="margin-left:3rem;" @click="subject_fliter4">자랑</span>
+            <span style="margin-left:3rem; cursor: pointer;" @click="subject_fliter1">일반</span>
+            <span style="margin-left:3rem; cursor: pointer;" @click="subject_fliter2">정보</span>
+            <span style="margin-left:3rem; cursor: pointer;" @click="subject_fliter3">사진</span>
+            <span style="margin-left:3rem; cursor: pointer;" @click="subject_fliter4">자랑</span>
           </th>
         </tr>
         <tr style="height: 3rem;">
@@ -55,7 +55,7 @@
       </table>
       <div class="btn_write">
         <router-link :to="{name:'create'}">
-          <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large;"> 글 쓰기 </button>
+          <button style="background-color: white; border: 1px solid black; width:100px; height: 40px; font-size: large; cursor: pointer;"> 글 쓰기 </button>
         </router-link>
       </div>
       <div style="display: flex; justify-content: center;">
@@ -73,7 +73,7 @@
         </select>
         <input type="text" v-model="search_key" @keyup.enter="searchbtn" style="border: 1px solid black; width:20%;">
         <button @click="searchbtn" style="border: 0; background-color: white; width:5%;">
-          <img src="../assets/searchicon.png" style="width:40%">
+          <img src="../assets/searchicon.png" style="width:40% cursor: pointer;">
         </button>
       </div>
     </div>

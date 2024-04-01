@@ -133,6 +133,7 @@ export default {
   padding: 7px 0;
   border-radius:  3px;
   transition: 0.14s all ease-in;
+  cursor: pointer;
 }
 .alert-text {
   display: block;
