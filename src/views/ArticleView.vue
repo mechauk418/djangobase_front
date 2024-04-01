@@ -73,7 +73,7 @@
         </select>
         <input type="text" v-model="search_key" @keyup.enter="searchbtn" style="border: 1px solid black; width:20%;">
         <button @click="searchbtn" style="border: 0; background-color: white; width:5%;">
-          <img src="../assets/searchicon.png" style="width:40% cursor: pointer;">
+          <img src="../assets/searchicon.png" style="width:40%; cursor: pointer;">
         </button>
       </div>
     </div>
