@@ -3,6 +3,7 @@
     <div style="width:100%;">
       <router-link to="/">Home</router-link> |
       <a href="https://www.isdfans.site/articles">Article</a> |
+      <!-- <a href="https://www.isdfans.site/todo">Todo</a> | -->
       <router-link to="/login" v-show="!logincheck">Login</router-link>
     </div>
     <div v-show="!logincheck" style="position: absolute; left: 70%; top:35%;">
