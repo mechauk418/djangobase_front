@@ -1,6 +1,6 @@
 <template>
   <div class="vlog" style="margin-top:10%">
-    <h1> DRF를 활용한 게시판 제작 </h1>
+    <h1> DRF를 활용한 게시판 제작111 </h1>
     <h1> 사용 툴 : Python, DRF, Vue,postgresql, Docker, AWS EC2 </h1>
 
     <p @click="vlog" class="home_link"> Velog </p>
